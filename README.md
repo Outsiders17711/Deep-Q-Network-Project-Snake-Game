@@ -10,9 +10,11 @@ This repository holds code and reports for an applied reinforcement learning res
 
 Several DQN agents were trained on different combinations of environment and incentives &ndash; borders, obstacles, rewards, and penalties. Furthermore, agents trained on one combination of environment and incentives were tested on other combinations of environment and incentives to investigate how much the agent's training generalizes when faced with novel situations. 
 
-The agents were trained for 500 games, and each test also lasted for 500 games. The results of the training and testing ablation studies conducted are presented and discussed in the [RL Project_ Deep Q-Network Agent Report](./RL%20Project_%20Deep%20Q-Network%20Agent%20Report.pdf) PDF file, and summarized in the [RL Project_ Deep Q-Network Agent Presentation](./RL%20Project_%20Deep%20Q-Network%20Agent%20Presentation.pdf) PDF file
+The agents were trained for 500 games, and each test also lasted for 500 games. The results of the training and testing ablation studies conducted are presented and discussed in the [RL Project_ Deep Q-Network Agent Report](./RL%20Project_%20Deep%20Q-Network%20Agent%20Report.pdf) PDF file, and summarized in the [RL Project_ Deep Q-Network Agent Presentation](./RL%20Project_%20Deep%20Q-Network%20Agent%20Presentation.pdf) PDF file.
 
 The code implementation was inspired by a similar open-source project [^1] [^2] by ***[Patrick Loeber](https://www.python-engineer.com/about/)***. Do check out his *[YouTube channel](https://www.youtube.com/c/PythonEngineer)* and *[website](https://www.python-engineer.com/)* for more informative Machine Learning, Computer Vision, and Data Science content. 
+
+<!-- add link to future bog post(s) -->
 
 <!-- -->
 [^1]: L. Patrick, *[Teach AI To Play Snake! Reinforcement Learning With PyTorch and Pygame.](https://github.com/python-engineer/snake-ai-pytorch)*, 2021. 
