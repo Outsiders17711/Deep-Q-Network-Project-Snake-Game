@@ -1,0 +1,7 @@
+.vscode
+*.docx
+*.pptx
+*.zip
+
+*Report.pdf
+README.md
