@@ -51,8 +51,8 @@ This is the main module for running the Snake Game Deep Q-Network code implement
 AITrainer(max_games=500, borders="closed", obstacles=0, file_name="demo_border=closed_obstacles=0.pth")
 ```
 
-<!-- <a><img src="https://github.com/Outsiders17711/Deep-Q-Network-Project-Snake-Game/blob/main/demo/Deep_Q-Network_Training_Demo_2_Trim.gif?raw=true" alt="Training Demo" style="width:480px;height:215px;"></a> -->
-<a><img src="./demo/Deep_Q-Network_Training_Demo_2_Trim.gif?raw=true" alt="Training Demo" style="width:480px;height:215px;"></a>
+<!-- <p style="text-align:center;"><img src="https://github.com/Outsiders17711/Deep-Q-Network-Project-Snake-Game/blob/main/demo/Deep_Q-Network_Training_Demo_2_Trim.gif?raw=true" alt="Training Demo" style="width:640px;max-height:286px;"></p> -->
+<p style="text-align:center;"><img src="./demo/Deep_Q-Network_Training_Demo_2_Trim.gif?raw=true" alt="Training Demo" style="width:640px;max-height:286px;"></p>
 
 ### Testing Demo
 
@@ -60,5 +60,5 @@ AITrainer(max_games=500, borders="closed", obstacles=0, file_name="demo_border=c
 AITester(max_games=500, borders="closed", obstacles=0, model_file="demo_border=closed_obstacles=0.pth")
 ```
 
-<!-- <a><img src="https://github.com/Outsiders17711/Deep-Q-Network-Project-Snake-Game/blob/main/demo/Deep_Q-Network_Testing_Demo_2_Trim.gif?raw=true" alt="Testing Demo" style="width:480px;height:215px;"></a> -->
-<a><img src="./demo/Deep_Q-Network_Testing_Demo_2_Trim.gif?raw=true" alt="Testing Demo" style="width:480px;height:215px;"></a>
+<!-- <p style="text-align:center;"><img src="https://github.com/Outsiders17711/Deep-Q-Network-Project-Snake-Game/blob/main/demo/Deep_Q-Network_Testing_Demo_2_Trim.gif?raw=true" alt="Testing Demo" style="width:640px;max-height:286px;"></p> -->
+<p style="text-align:center;"><img src="./demo/Deep_Q-Network_Testing_Demo_2_Trim.gif?raw=true" alt="Testing Demo" style="width:640px;max-height:286px;"></p>
