@@ -21,3 +21,16 @@ explicit = true
 
 [tool.uv.sources]
 torch = { index = "pytorch-cpu" }
+
+[tool.ruff]
+line-length = 105
+
+[tool.ruff.lint]
+select = ["F", "I"]
+ignore = ["F401", "F403", "F405"]
+
+[tool.pyright]
+include = ["src", "DQNSnakeMain.py"]
+pythonVersion = "3.13"
+venvPath = "."
+venv = ".venv"
