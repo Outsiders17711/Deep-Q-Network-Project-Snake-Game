@@ -1,0 +1,23 @@
+[project]
+name = "dqn-snake"
+version = "0.1.0"
+description = "Deep Q-Network agent for the Snake game"
+readme = "README.md"
+requires-python = ">=3.13,<3.14"
+dependencies = [
+    "matplotlib>=3.11.2",
+    "numpy>=2.5.4",
+    "pygame==2.6.1",
+    "torch==2.15.0",
+]
+
+[tool.uv]
+package = false
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[tool.uv.sources]
+torch = { index = "pytorch-cpu" }

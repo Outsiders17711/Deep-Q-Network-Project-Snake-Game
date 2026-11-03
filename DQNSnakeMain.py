@@ -1,10 +1,10 @@
 # [IMPORT MODULES]_____________________________________________________________
-import os
 import math
 import statistics as stats
+from pathlib import Path
 
-from _dqnSnakeEnvironment import dqnSnakeGame
-from _dqnAIAgent import AIAgent
+from src.AIAgent import AIAgent
+from src.SnakeEnvironment import dqnSnakeGame
 
 
 # [>>>>>]______________________________________________________________________
@@ -70,15 +70,14 @@ def AITester(model_file=None, testing_speed=None, obstacles=None, max_games=None
     The game environment is created based on the specified number of `obstacles` and  `borders` (open/hybrid/closed).
     """
 
-    model_folder_path = os.path.dirname(os.path.abspath(__file__))
-    model_folder_path = os.path.join(model_folder_path, "models")
+    model_folder_path = Path(__file__).resolve().parent / "models"
 
     if not model_file:
-        models = [f for f in os.listdir(model_folder_path) if "_aiTestModel" in f]
+        models = [f.name for f in model_folder_path.iterdir() if "_aiTestModel" in f.name]
         model_file = sorted(models, reverse=True)[0]
         print(f"Available Test Models: {models}")
 
-    model_path = os.path.join(model_folder_path, model_file)
+    model_path = model_folder_path / model_file
     print(f"Playing game in AI mode using best trained model <{model_file}>")
 
     histScores = []

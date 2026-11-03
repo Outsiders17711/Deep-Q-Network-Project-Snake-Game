@@ -2,11 +2,11 @@
 import random
 from collections import deque
 
-import torch
 import numpy as np
+import torch
 
-from _dqnSnakeEnvironment import Direction, Point
-from _dqnAINetwork import Linear_QNET, QTRainer
+from src.AINetwork import Linear_QNET, QTRainer
+from src.SnakeEnvironment import Direction, Point
 
 
 # [AGENT MEMORY AND TRAINING PARAMETERS]________________________________________

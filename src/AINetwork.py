@@ -1,13 +1,13 @@
 # [IMPORT MODULES]_____________________________________________________________
-import os
+from pathlib import Path
 
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
 
 import torch
 import torch.nn as nn
-import torch.optim as optim
 import torch.nn.functional as F
+import torch.optim as optim
 
 # [DEFINE NEURAL NETWORK ARCHITECTURE]_________________________________________
 class Linear_QNET(nn.Module):
@@ -49,17 +49,13 @@ class Linear_QNET(nn.Module):
         return x
 
     def save(self, file_name="_aiTrainModel.pth"):
-        """
-        Saves PyTorch model dictionary to disk. Save folder is the containing folder of this module. An optional `file_name` can be provided.
-        """
+        """saves the model state dictionary to the project models folder; an optional file name can be provided."""
 
-        model_folder_path = os.path.dirname(os.path.abspath(__file__))
-        model_folder_path = os.path.join(model_folder_path, "models")
-        if not os.path.exists(model_folder_path):
-            os.makedirs(model_folder_path)
+        model_folder_path = Path(__file__).resolve().parent.parent / "models"
+        model_folder_path.mkdir(parents=True, exist_ok=True)
 
-        file_name = os.path.join(model_folder_path, file_name)
-        torch.save(self.state_dict(), file_name)
+        file_path = model_folder_path / file_name
+        torch.save(self.state_dict(), file_path)
 
 
 # [INIT Q-NETWORK TRAINER]____________________________________________________________

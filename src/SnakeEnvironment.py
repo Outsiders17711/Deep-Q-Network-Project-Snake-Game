@@ -1,15 +1,15 @@
 # [IMPORT MODULES]_____________________________________________________________
 import os
-import sys
 import random
+import sys
 from collections import namedtuple
 from enum import Enum
 
 
 os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "hide"
 
-import pygame as pyg
 import numpy as np
+import pygame as pyg
 
 
 # [UI PARAMETERS]___________________________________________________________

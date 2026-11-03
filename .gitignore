@@ -1,6 +1,12 @@
 **/__pycache__
+.venv/
 .vscode
+.idea/
+.ruff_cache/
+
+archive/
 
 *.docx
 *.pptx
 *.zip
+*.py[cod]
