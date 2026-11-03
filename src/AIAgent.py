@@ -16,12 +16,12 @@ LR = 0.001
 
 # [INIT AI AGENT]_______________________________________________________________
 class AIAgent:
-    def __init__(self):
+    def __init__(self, architecture="simple"):
         self.n_games = 0
         self.epsilon = 0  # randomness
         self.gamma = 0.9  # discount rate
         self.memory = deque(maxlen=MAX_MEMORY)
-        self.model = Linear_QNET(11, 256, 3)
+        self.model = Linear_QNET(11, 256, 3, architecture=architecture)
         self.trainer = QTRainer(self.model, lr=LR, gamma=self.gamma)
 
     def get_state(self, game):

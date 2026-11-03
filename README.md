@@ -19,10 +19,12 @@ The project uses Python 3.13 and [uv](https://docs.astral.sh/uv/) for dependency
 
 ```bash
 uv sync
-uv run python DQNSnakeMain.py
+uv run python DQNSnakeMain.py play
+uv run python DQNSnakeMain.py train --games 500 --borders closed --obstacles 0
+uv run python DQNSnakeMain.py test --model closedBorderM064.pth --borders closed --obstacles 0
 ```
 
-`uv sync` creates the `.venv` environment and installs the locked dependencies, including the CPU build of PyTorch. The uncommented call at the bottom of `DQNSnakeMain.py` selects training, testing, or human play. The entry point is `DQNSnakeMain.py`, the game modules live in `src/`, trained models in `models/`, and the demo GIFs, report, and presentation in `docs/`.
+`uv sync` creates the `.venv` environment and installs the locked dependencies, including the CPU build of PyTorch. The CLI selects training, testing, or human play; use `--help` on the main command or a subcommand for the available options. The entry point is `DQNSnakeMain.py`, the game modules live in `src/`, trained models in `models/`, and the demo GIFs, report, and presentation in `docs/`.
 
 ### Code Implementation in Python, PyTorch & Pygame
 
@@ -38,27 +40,28 @@ This helper module contains the Pygame implementation of the game environment (b
 This helper module implements the snake game agent by building upon and connecting the `src/AINetwork.py` and `src/SnakeEnvironment.py` helper modules. It abstracts the game state variables from `src/SnakeEnvironment.py` and passes the state variables to `src/AINetwork.py` to determine the agent's next move.
 
 4. **`DQNSnakeMain.py`**
-This is the main module for running the Snake Game Deep Q-Network code implementation. It contains three functions, which depend on the `src/SnakeEnvironment.py` and `src/AIAgent.py` helper modules, viz:
-    - `AITrainer()`: Trains an agent model for a number of games within a specified environment .
+This is the main module for running the Snake Game Deep Q-Network code implementation. It provides the CLI and contains three functions, which depend on the `src/SnakeEnvironment.py` and `src/AIAgent.py` helper modules, viz:
+    - `AITrainer()`: Trains an agent model for a number of games within a specified environment.
     - `AITester()`: Loads a trained agent model for testing in a specified environment.
     - `userMode()`: Sets up a game with a specified environment with the user's keyboard input determining the snake's movement.
 
-  The `./models` folder contains some trained agent models. The suffixes `Mxxx` represents the maximum score (in one game) achieved by the agent during training across 500 games. `complexNetworkM059.pth` requires the commented complex architecture block in `src/AINetwork.py` to be enabled; the default simple architecture cannot load it.
+  The `models/` folder contains some trained agent models. The suffixes `Mxxx` represent the maximum score (in one game) achieved by the agent during training across 500 games. `complexNetworkM059.pth` requires `--architecture complex` when testing; the default simple architecture cannot load it. See [experiments](./docs/experiments.md) for the full training and testing matrix used to create these models.
 
 <hr>
 
 ### Training Demo
 
-```python
-AITrainer(max_games=500, borders="closed", obstacles=0)
+```bash
+uv run python DQNSnakeMain.py train --games 500 --borders closed --obstacles 0
 ```
 
 <p align="center"><img src="./docs/DeepQ-Network-Training.gif?raw=true" alt="Training Demo" style="width:640px;max-height:286px;"></p>
 
 ### Testing Demo
 
-```python
-AITester(max_games=500, borders="closed", obstacles=0, model_file="closedBorderM064.pth")
+```bash
+uv run python DQNSnakeMain.py test --games 500 --borders closed --obstacles 0 --model closedBorderM064.pth
+uv run python DQNSnakeMain.py test --games 500 --borders closed --obstacles 0 --model complexNetworkM059.pth --architecture complex
 ```
 
 <p align="center"><img src="./docs/DeepQ-Network-Testing.gif?raw=true" alt="Testing Demo" style="width:640px;max-height:286px;"></p>

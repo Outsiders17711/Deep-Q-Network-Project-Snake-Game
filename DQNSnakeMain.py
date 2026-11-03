@@ -1,4 +1,5 @@
 # [IMPORT MODULES]_____________________________________________________________
+import argparse
 import math
 import statistics as stats
 from pathlib import Path
@@ -8,11 +9,19 @@ from src.SnakeEnvironment import dqnSnakeGame
 
 
 # [>>>>>]______________________________________________________________________
-def AITrainer(max_games=None, training_speed=None, obstacles=None, file_name=None, borders="hybrid"):
+def AITrainer(
+    max_games=None,
+    training_speed=None,
+    obstacles=None,
+    file_name=None,
+    borders="hybrid",
+    architecture="simple",
+):
     """
     Start a training session at a UI frame refresh rate `training_speed`, maximum number of games `max_games`.
     The game environment is created based on the specified number of `obstacles` and  `borders` (open/hybrid/closed).
     An optional `file_name` overrides the default name of the trained network model when saved to disk.
+    The network architecture can be `simple` or `complex`.
     """
 
     histScores = []
@@ -20,7 +29,7 @@ def AITrainer(max_games=None, training_speed=None, obstacles=None, file_name=Non
     histHighScore = 0
     max_games = math.inf if not max_games else max_games
     training_speed = math.inf if not training_speed else training_speed
-    agent = AIAgent()
+    agent = AIAgent(architecture=architecture)
     game = dqnSnakeGame(speed=training_speed, mode=0, obstacles=obstacles, border_type=borders)
 
     while True:
@@ -56,10 +65,18 @@ def AITrainer(max_games=None, training_speed=None, obstacles=None, file_name=Non
 
 
 # [>>>>>]______________________________________________________________________
-def AITester(model_file=None, testing_speed=None, obstacles=None, max_games=None, borders="hybrid"):
+def AITester(
+    model_file=None,
+    testing_speed=None,
+    obstacles=None,
+    max_games=None,
+    borders="hybrid",
+    architecture="simple",
+):
     """
     Start a testing session at a UI frame refresh rate `testing_speed`, maximum number of games `max_games` and agent from trained model `model_file`.
     The game environment is created based on the specified number of `obstacles` and  `borders` (open/hybrid/closed).
+    The network architecture can be `simple` or `complex`.
     """
 
     model_folder_path = Path(__file__).resolve().parent / "models"
@@ -74,7 +91,7 @@ def AITester(model_file=None, testing_speed=None, obstacles=None, max_games=None
 
     histScores = []
     histMeanScores = []
-    agent = AIAgent()
+    agent = AIAgent(architecture=architecture)
     testing_speed = math.inf if not testing_speed else testing_speed
     max_games = math.inf if not max_games else max_games
     game = dqnSnakeGame(speed=testing_speed, mode=0, obstacles=obstacles, border_type=borders)
@@ -118,84 +135,66 @@ def userMode(playing_speed=10, xxspeed=1, mode=1, obstacles=None, borders="open"
             break
 
 
-if __name__ == "__main__":
-    """
-    Carry out agent training from scratch or testing with previously trained agents by uncommenting the relevant line of code.
-    Each section and line of code is self-explanatory, with comments to aid comprehension.
-    """
+def parseArgs():
+    parser = argparse.ArgumentParser(description="Run the Snake game Deep Q-Network agent.")
+    commands = parser.add_subparsers(dest="command", required=True)
 
-    # ---
-    # 1.1 - CLOSED BORDERS & 0 OBSTACLES
-    # AITrainer(max_games=500, obstacles=0, borders="closed")
-    # AITester(max_games=500, model_file="closedBorderM064.pth", borders="closed", obstacles=0)
-    # AITester(max_games=500, model_file="closedBorderM064.pth", borders="closed", obstacles=10)
-    # AITester(max_games=500, model_file="closedBorderM064.pth", borders="closed", obstacles=20)
-    # ---
-    # 1.2 - CLOSED BORDERS & 10 OBSTACLES
-    # AITrainer(max_games=500, obstacles=10, borders="closed")
-    # AITester(max_games=500, model_file="closedBorderM050.pth", borders="closed", obstacles=0)
-    # AITester(max_games=500, model_file="closedBorderM050.pth", borders="closed", obstacles=10)
-    # AITester(max_games=500, model_file="closedBorderM050.pth", borders="closed", obstacles=20)
-    # 1.3 - CLOSED BORDERS & 20 OBSTACLES
-    # AITrainer(max_games=500, obstacles=20, borders="closed")
-    # AITester(max_games=500, model_file="closedBorderM041.pth", borders="closed", obstacles=0)
-    # AITester(max_games=500, model_file="closedBorderM041.pth", borders="closed", obstacles=10)
-    # AITester(max_games=500, model_file="closedBorderM041.pth", borders="closed", obstacles=20)
-    # ---
-    #
-    # ---
-    # 2.1 - HYBRID BORDERS & 0 OBSTACLES
-    # AITrainer(max_games=500, obstacles=0, borders="hybrid")
-    # AITester(max_games=500, model_file="hybridBorderM074.pth", borders="hybrid", obstacles=0)
-    # AITester(max_games=500, model_file="hybridBorderM074.pth", borders="hybrid", obstacles=10)
-    # AITester(max_games=500, model_file="hybridBorderM074.pth", borders="hybrid", obstacles=20)
-    # ---
-    # 2.2 - HYBRID BORDERS & 0 OBSTACLES
-    # AITrainer(max_games=500, obstacles=10, borders="hybrid")
-    # AITester(max_games=500, model_file="hybridBorderM048.pth", borders="hybrid", obstacles=0)
-    # AITester(max_games=500, model_file="hybridBorderM048.pth", borders="hybrid", obstacles=10)
-    # AITester(max_games=500, model_file="hybridBorderM048.pth", borders="hybrid", obstacles=20)
-    # ---
-    # 2.3 - HYBRID BORDERS & 0 OBSTACLES
-    # AITrainer(max_games=500, obstacles=20, borders="hybrid")
-    # AITester(max_games=500, model_file="hybridBorderM035.pth", borders="hybrid", obstacles=0)
-    # AITester(max_games=500, model_file="hybridBorderM035.pth", borders="hybrid", obstacles=10)
-    # AITester(max_games=500, model_file="hybridBorderM035.pth", borders="hybrid", obstacles=20)
-    # ---
-    #
-    # ---
-    # 3 - TRAINING AND TESTING WITH DIFFERENT INCENTIVES [collision=-10, food=+30, no progress=-10]
-    # AITrainer(max_games=500, obstacles=20, borders="hybrid")
-    # AITester(max_games=500, model_file="fixLoopingM030.pth", borders="hybrid", obstacles=20)
-    # ---
-    #
-    # ---
-    # 4.1. TESTING CLOSED BORDER - NO OBSTACLES MODEL ON HYBRID BORDER
-    # AITester(max_games=500, model_file="closedBorderM064.pth", borders="hybrid", obstacles=0)
-    # AITester(max_games=500, model_file="closedBorderM064.pth", borders="hybrid", obstacles=20)
-    # ---
-    # 4.2. TESTING HYBRID BORDER - NO OBSTACLES MODEL ON CLOSED BORDER
-    # AITester(max_games=500, model_file="hybridBorderM074.pth", borders="closed", obstacles=0)
-    # AITester(max_games=500, model_file="hybridBorderM074.pth", borders="closed", obstacles=20)
-    # ---
-    #
-    # ---
-    # 5. CLOSED BORDERS - COMPLEX NN
-    # AITrainer(max_games=500, obstacles=0, borders="closed")
-    # AITester(max_games=500, model_file="complexNetworkM059.pth", borders="closed", obstacles=0)
-    # AITester(max_games=500, model_file="complexNetworkM059.pth", borders="closed", obstacles=10)
-    # AITester(max_games=500, model_file="complexNetworkM059.pth", borders="closed", obstacles=20)
-    # ---
-    #
-    # --- DEMO TRAINING & TESTING
-    # AITrainer(max_games=100, obstacles=None, borders="closed", training_speed=75)
-    # AITester(max_games=100, model_file="closedBorderM064.pth", borders="closed", testing_speed=75)
-    # --- DEMO TRAINING & TESTING
-    #
-    # ---
-    userMode(playing_speed=10, xxspeed=1, obstacles=None, borders="hybrid")
-    # ---
-    #
-    pass
+    train = commands.add_parser("train", help="train a new agent")
+    train.add_argument("--games", type=int)
+    train.add_argument("--speed", type=float)
+    train.add_argument("--obstacles", type=int)
+    train.add_argument("--model-name")
+    train.add_argument("--borders", choices=("open", "hybrid", "closed"), default="hybrid")
+    train.add_argument("--architecture", choices=("simple", "complex"), default="simple")
+
+    test = commands.add_parser("test", help="test a trained agent")
+    test.add_argument("--model")
+    test.add_argument("--games", type=int)
+    test.add_argument("--speed", type=float)
+    test.add_argument("--obstacles", type=int)
+    test.add_argument("--borders", choices=("open", "hybrid", "closed"), default="hybrid")
+    test.add_argument("--architecture", choices=("simple", "complex"), default="simple")
+
+    play = commands.add_parser("play", help="play the game manually")
+    play.add_argument("--speed", type=float, default=10)
+    play.add_argument("--xxspeed", type=float, default=1)
+    play.add_argument("--obstacles", type=int)
+    play.add_argument("--borders", choices=("open", "hybrid", "closed"), default="hybrid")
+
+    return parser.parse_args()
+
+
+def main():
+    args = parseArgs()
+
+    if args.command == "train":
+        AITrainer(
+            max_games=args.games,
+            training_speed=args.speed,
+            obstacles=args.obstacles,
+            file_name=args.model_name,
+            borders=args.borders,
+            architecture=args.architecture,
+        )
+    elif args.command == "test":
+        AITester(
+            model_file=args.model,
+            testing_speed=args.speed,
+            obstacles=args.obstacles,
+            max_games=args.games,
+            borders=args.borders,
+            architecture=args.architecture,
+        )
+    else:
+        userMode(
+            playing_speed=args.speed,
+            xxspeed=args.xxspeed,
+            obstacles=args.obstacles,
+            borders=args.borders,
+        )
+
+
+if __name__ == "__main__":
+    main()
 
 # [_end]____________________________________________________________

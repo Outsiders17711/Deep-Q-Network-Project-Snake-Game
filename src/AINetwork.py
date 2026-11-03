@@ -13,40 +13,32 @@ from torch import nn, optim
 class Linear_QNET(nn.Module):
     """
     Defines a neural network architecture based on the self-explanatory `input_size`, `hidden_size`, `output_size` parameters.
-    Two architectures can be created from the same set of parameters by commenting/uncommenting the relevant blocks of code:
+    Two architectures can be created from the same set of parameters using the `architecture` parameter:
     --- simple: [input_size x hidden_size x output_size]
     --- complex: [input_size x hidden_size x 2*hidden_size x output_size]
     """
 
-    def __init__(self, input_size, hidden_size, output_size):
+    def __init__(self, input_size, hidden_size, output_size, architecture="simple"):
         super().__init__()
-        #
-        # simple model [comment/uncomment block]
-        self.linear1 = nn.Linear(input_size, hidden_size)
-        self.linear2 = nn.Linear(hidden_size, output_size)
-        # simple model [comment/uncomment block]
-        #
-        # complex model [comment/uncomment block]
-        # self.hidden1 = nn.Linear(input_size, hidden_size)
-        # self.hidden2 = nn.Linear(hidden_size, hidden_size * 2)
-        # self.outlayer = nn.Linear(hidden_size * 2, output_size)
-        # complex model [comment/uncomment block]
-        #
+        assert architecture in ("simple", "complex"), "!!!"
+        self.architecture = architecture
+
+        if architecture == "simple":
+            self.linear1 = nn.Linear(input_size, hidden_size)
+            self.linear2 = nn.Linear(hidden_size, output_size)
+        else:
+            self.hidden1 = nn.Linear(input_size, hidden_size)
+            self.hidden2 = nn.Linear(hidden_size, hidden_size * 2)
+            self.outlayer = nn.Linear(hidden_size * 2, output_size)
 
     def forward(self, x):
-        #
-        # simple model [comment/uncomment block]
-        x = F.relu(self.linear1(x))
-        x = self.linear2(x)
-        # simple model [comment/uncomment block]
-        #
-        # complex model [comment/uncomment block]
-        # x = F.relu(self.hidden1(x))
-        # x = F.relu(self.hidden2(x))
-        # x = self.outlayer(x)
-        # complex model [comment/uncomment block]
-        #
-        return x
+        if self.architecture == "simple":
+            x = F.relu(self.linear1(x))
+            return self.linear2(x)
+
+        x = F.relu(self.hidden1(x))
+        x = F.relu(self.hidden2(x))
+        return self.outlayer(x)
 
     def save(self, file_name="_aiTrainModel.pth"):
         """saves the model state dictionary to the project models folder; an optional file name can be provided."""
