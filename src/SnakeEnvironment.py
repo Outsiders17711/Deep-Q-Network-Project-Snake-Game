@@ -5,12 +5,10 @@ import sys
 from collections import namedtuple
 from enum import Enum
 
-
 os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "hide"
 
 import numpy as np
 import pygame as pyg
-
 
 # [UI PARAMETERS]___________________________________________________________
 WIDTH, HEIGHT = 720, 320
@@ -47,7 +45,7 @@ class dqnSnakeGame:
     The `xxspeed` parameter controls how much to increase the game speed when the food is eaten (for Human mode only).
     """
 
-    def __init__(self, speed=10, xxspeed=None, mode=1, obstacles=None, border_type="hybrid"):
+    def __init__(self, speed=10.0, xxspeed=None, mode=1, obstacles=None, border_type="hybrid"):
         # init ui
         pyg.init()
         self.speed = speed
@@ -211,10 +209,7 @@ class dqnSnakeGame:
             return True
 
         # snake hits its body
-        if pt in self.snake[1:]:
-            return True
-
-        return False
+        return pt in self.snake[1:]
 
     def _update_ui(self):
         """Draw the UI i.e., the environment components and the snake."""
@@ -307,6 +302,7 @@ class dqnSnakeGame:
         """Update the position of the snake taking direction and porous borders into account."""
 
         if not self.human_mode:
+            assert action is not None, "!!!"
             clock_wise = [Direction.RIGHT, Direction.DOWN, Direction.LEFT, Direction.UP]
             idx = clock_wise.index(self.direction)
 

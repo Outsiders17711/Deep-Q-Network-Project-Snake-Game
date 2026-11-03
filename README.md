@@ -43,7 +43,7 @@ This is the main module for running the Snake Game Deep Q-Network code implement
     - `AITester()`: Loads a trained agent model for testing in a specified environment.
     - `userMode()`: Sets up a game with a specified environment with the user's keyboard input determining the snake's movement.
 
-  The `./models` folder contains some trained agent models. The suffixes `Mxxx` represents the maximum score (in one game) achieved by the agent during training across 500 games.
+  The `./models` folder contains some trained agent models. The suffixes `Mxxx` represents the maximum score (in one game) achieved by the agent during training across 500 games. `complexNetworkM059.pth` requires the commented complex architecture block in `src/AINetwork.py` to be enabled; the default simple architecture cannot load it.
 
 <hr>
 

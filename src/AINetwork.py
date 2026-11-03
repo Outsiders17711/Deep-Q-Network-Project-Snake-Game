@@ -1,13 +1,13 @@
 # [IMPORT MODULES]_____________________________________________________________
+from contextlib import suppress
 from pathlib import Path
 
 import matplotlib.pyplot as plt
 import numpy as np
-
 import torch
-import torch.nn as nn
 import torch.nn.functional as F
-import torch.optim as optim
+from torch import nn, optim
+
 
 # [DEFINE NEURAL NETWORK ARCHITECTURE]_________________________________________
 class Linear_QNET(nn.Module):
@@ -109,7 +109,7 @@ class QTRainer:
         Plots the historical individual and mean scores for a number of games.
         """
 
-        try:
+        with suppress(Exception):
             plt.xlabel("Number of Games")
             plt.ylabel("Score")
             plt.plot(scores)
@@ -120,9 +120,6 @@ class QTRainer:
 
             plt.show(block=False)
             plt.pause(lenPause)
-
-        except:
-            pass
 
 
 # [_end]____________________________________________________________

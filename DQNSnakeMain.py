@@ -8,9 +8,7 @@ from src.SnakeEnvironment import dqnSnakeGame
 
 
 # [>>>>>]______________________________________________________________________
-def AITrainer(
-    max_games=None, training_speed=None, obstacles=None, file_name=None, borders="hybrid"
-):
+def AITrainer(max_games=None, training_speed=None, obstacles=None, file_name=None, borders="hybrid"):
     """
     Start a training session at a UI frame refresh rate `training_speed`, maximum number of games `max_games`.
     The game environment is created based on the specified number of `obstacles` and  `borders` (open/hybrid/closed).
@@ -26,41 +24,35 @@ def AITrainer(
     game = dqnSnakeGame(speed=training_speed, mode=0, obstacles=obstacles, border_type=borders)
 
     while True:
-        try:
-            state_old = agent.get_state(game)
-            final_move = agent.get_action(state_old)
-            reward, done, score = game.play_step(final_move)
-            state_new = agent.get_state(game)
+        state_old = agent.get_state(game)
+        final_move = agent.get_action(state_old)
+        reward, done, score = game.play_step(final_move)
+        state_new = agent.get_state(game)
 
-            agent.train_short_memory(state_old, final_move, reward, state_new, done)
-            agent.remember(state_old, final_move, reward, state_new, done)
+        agent.train_short_memory(state_old, final_move, reward, state_new, done)
+        agent.remember(state_old, final_move, reward, state_new, done)
 
-            if done:
-                game.reset()
-                agent.n_games += 1
-                agent.train_long_memory()
+        if done:
+            game.reset()
+            agent.n_games += 1
+            agent.train_long_memory()
 
-                if score > histHighScore:
-                    histHighScore = score
-                    agent.model.save()
+            if score > histHighScore:
+                histHighScore = score
+                agent.model.save()
 
-                histScores.append(score)
-                histMeanScores.append(round(stats.mean(histScores), ndigits=2))
+            histScores.append(score)
+            histMeanScores.append(round(stats.mean(histScores), ndigits=2))
 
-            if agent.n_games == max_games:
-                print("Maximum number of games reached!")
-                raise Exception
-
-        except Exception:
-            print(
-                f"AI training terminated! ",
-                f"Number of Games: {agent.n_games}  |  High Score: {histHighScore}",
-            )
-            if not file_name:
-                file_name = file_name = f"_aiTestModel{histHighScore:0=3d}.pth"
-            agent.model.save(file_name=file_name)
-            agent.trainer._plotHistory(histScores, histMeanScores, lenPause=60)
+        if agent.n_games == max_games:
+            print("Maximum number of games reached!")
             break
+
+    print(f"AI training terminated! Number of Games: {agent.n_games}  |  High Score: {histHighScore}")
+    if not file_name:
+        file_name = f"_aiTestModel{histHighScore:0=3d}.pth"
+    agent.model.save(file_name=file_name)
+    agent.trainer._plotHistory(histScores, histMeanScores, lenPause=60)
 
 
 # [>>>>>]______________________________________________________________________
@@ -74,7 +66,7 @@ def AITester(model_file=None, testing_speed=None, obstacles=None, max_games=None
 
     if not model_file:
         models = [f.name for f in model_folder_path.iterdir() if "_aiTestModel" in f.name]
-        model_file = sorted(models, reverse=True)[0]
+        model_file = max(models)
         print(f"Available Test Models: {models}")
 
     model_path = model_folder_path / model_file
@@ -90,7 +82,7 @@ def AITester(model_file=None, testing_speed=None, obstacles=None, max_games=None
     while True:
         state_old = agent.get_state(game)
         final_move = agent.get_action(state_old, playMode=True, modelPath=model_path)
-        reward, done, score = game.play_step(final_move)
+        _reward, done, score = game.play_step(final_move)
         agent.get_state(game)
 
         if done:
@@ -120,7 +112,7 @@ def userMode(playing_speed=10, xxspeed=1, mode=1, obstacles=None, borders="open"
     )
 
     while True:
-        reward, game_over, score = game.play_step()
+        _reward, game_over, score = game.play_step()
         if game_over:
             print("Final Score:", score)
             break

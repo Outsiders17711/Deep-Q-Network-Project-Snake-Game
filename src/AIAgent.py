@@ -8,7 +8,6 @@ import torch
 from src.AINetwork import Linear_QNET, QTRainer
 from src.SnakeEnvironment import Direction, Point
 
-
 # [AGENT MEMORY AND TRAINING PARAMETERS]________________________________________
 MAX_MEMORY = 100000
 BATCH_SIZE = 100
@@ -100,6 +99,7 @@ class AIAgent:
         self.epsilon = 80 - self.n_games
         final_move = [0, 0, 0]
         if playMode:
+            assert modelPath is not None, "!!!"
             self.model.load_state_dict(torch.load(modelPath))
 
         if random.randint(0, 200) < self.epsilon and not playMode:
@@ -109,7 +109,7 @@ class AIAgent:
         else:
             state0 = torch.tensor(state, dtype=torch.float)
             prediction = self.model(state0)
-            move = torch.argmax(prediction).item()
+            move = int(torch.argmax(prediction).item())
             final_move[move] = 1
 
         return final_move
